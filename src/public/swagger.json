@@ -1,0 +1,212 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is Auth related API document.",
+    "version": "1.0.0",
+    "title": "Auth APIs",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "ashish.kushwaha@justdial.com"
+    }
+  },
+  "host": "localhost:1011",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Auth related APIs",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/auth/mysql/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Add a user",
+        "description": "",
+        "operationId": "addUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User email and password",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Register"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/auth/mysql/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "API to get access and refresh token",
+        "description": "",
+        "operationId": "userLogin",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "A valid email and password.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/auth/refresh/grant": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Provides new access token in exchange of a valid refresh_token",
+        "description": "",
+        "operationId": "exchangeToken",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "refresh token and email",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ExchangeToken"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          "405": {
+            "description": "Invalid params"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Register": {
+      "type": "object",
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "john.doe@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "doggie",
+          "format": "password"
+        }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "john.doe@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "doggie",
+          "format": "password"
+        }
+      }
+    },
+    "ExchangeToken": {
+      "type": "object",
+      "required": [
+        "refresh_token",
+        "email"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "john.doe@example.com"
+        },
+        "refresh_token": {
+          "type": "string",
+          "example": "$2a$10$Em6c0oh6ojp/Jj2y/X9cmOmlyQFN2iGeKTQSy6fnnwJ7Y6yDoKmgu"
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "errorCode": {
+          "type": "integer"
+        },
+        "errorStatus": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}
